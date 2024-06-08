@@ -9,18 +9,18 @@ import (
 var pipelineSize int
 var wrcMin int
 var wrcMax int
-var useAlternatingInventory bool
+var inventory string
 var runs int
 
 var plotAchievedOutput bool
 var plotLag bool
 var plotAllWrcInventories bool
-var plotAllWrcUnusedCapacity bool
-var plotRelativeUnusedCapacity bool
+var plotAllWrcStarvedCapacity bool
+var plotRelativeStarvedCapacity bool
 var plotAll bool
 
 func supplyInventory() lib.Inventory {
-	if useAlternatingInventory {
+	if "epic-alternating" == inventory {
 		return lib.CreateAlternatingBottomlessInventory(wrcMin + (wrcMax-wrcMin)/2)
 	} else {
 		return &lib.SimpleBottomlessInventory{}
@@ -32,22 +32,23 @@ func noSpecificOutputRequested() bool {
 		!plotAchievedOutput &&
 		!plotLag &&
 		!plotAllWrcInventories &&
-		!plotAllWrcUnusedCapacity &&
-		!plotRelativeUnusedCapacity
+		!plotAllWrcStarvedCapacity &&
+		!plotRelativeStarvedCapacity
 }
 
 func init() {
 	flag.IntVar(&pipelineSize, "ps", 5, "Production pipeline size")
 	flag.IntVar(&wrcMin, "wrc-min", 1, "Work center minimal capacity during a single run")
 	flag.IntVar(&wrcMax, "wrc-max", 6, "Work center maximal capacity during a single run")
-	flag.BoolVar(&useAlternatingInventory, "alternating-inventory", false, "Use epic/non-epic alternating inventory")
+	flag.StringVar(&inventory, "i", "simple", "Input inventory to production line")
+
 	flag.IntVar(&runs, "r", 20, "Number of runs to perform")
 
 	flag.BoolVar(&plotAchievedOutput, "plot-achieved-output", false, "Plot expected vs achieved output")
 	flag.BoolVar(&plotLag, "plot-lag", false, "Plot output lag relative to baseline")
 	flag.BoolVar(&plotAllWrcInventories, "plot-wrc-inventories", false, "Plot inventories work centers have accumulated")
-	flag.BoolVar(&plotAllWrcUnusedCapacity, "plot-wrc-unused-capacity", false, "Plot unused capacity in work center")
-	flag.BoolVar(&plotRelativeUnusedCapacity, "plot-unused-capacity", false, "Plot total unused capacity across all work center in a run")
+	flag.BoolVar(&plotAllWrcStarvedCapacity, "plot-wrc-starving", false, "Plot unused capacity in work center")
+	flag.BoolVar(&plotRelativeStarvedCapacity, "plot-starving", false, "Plot total unused capacity across all work center in a run")
 
 	flag.BoolVar(&plotAll, "G", false, "Output all plots")
 }
@@ -78,10 +79,10 @@ func main() {
 	if plotAllWrcInventories || plotAll {
 		g.PlotAllWorkCenterInventories()
 	}
-	if plotAllWrcUnusedCapacity || plotAll {
+	if plotAllWrcStarvedCapacity || plotAll {
 		g.PlotAllWorkCenterUnusedCapacity()
 	}
-	if plotRelativeUnusedCapacity || plotAll {
+	if plotRelativeStarvedCapacity || plotAll {
 		g.PlotRelativeCumulativeUnusedCapacity()
 	}
 }

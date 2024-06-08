@@ -46,11 +46,13 @@ func (g *Grapher) PlotAchievedOutput() {
 	data := make([][]float64, 2)
 
 	avg := float64(g.minCapacity) + float64(g.maxCapacity-g.minCapacity)/2
-	expectedBand := make([]float64, len(g.runs))
-	actualBand := make([]float64, len(g.runs))
+
+	numRuns := len(g.runs)
+	expectedBand := make([]float64, numRuns)
+	actualBand := make([]float64, numRuns)
 
 	for i := range g.runs {
-		expectedBand[i] = float64(i) * avg
+		expectedBand[i] = float64(i+1) * avg
 		actualBand[i] = float64(g.runs[i].AchievedOutput)
 	}
 
@@ -63,7 +65,7 @@ func (g *Grapher) PlotAchievedOutput() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(asciigraph.Blue, asciigraph.Pink),
 		asciigraph.SeriesLegends("Expected", "Achieved"),
-		asciigraph.Caption("Achieved output"),
+		asciigraph.Caption(fmt.Sprintf("Achieved %d of %d mean", int(actualBand[numRuns-1]), int(expectedBand[numRuns-1]))),
 	)
 
 	fmt.Println(graph)
@@ -146,7 +148,7 @@ func (g *Grapher) PlotAllWorkCenterUnusedCapacity() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(allColours[:numWorkCenters]...),
 		asciigraph.SeriesLegends(wrcLabels...),
-		asciigraph.Caption("Work Center Unused Capacity"),
+		asciigraph.Caption("Work Center Starving"),
 	)
 
 	fmt.Println(graph)
@@ -180,7 +182,7 @@ func (g *Grapher) PlotCumulativeUnusedCapacity() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(asciigraph.Blue, asciigraph.Red),
 		asciigraph.SeriesLegends("Capacity Available", "Capacity Unused"),
-		asciigraph.Caption("Total Unused Capacity Per Run"),
+		asciigraph.Caption("Total Starving Per Run"),
 	)
 
 	fmt.Println(graph)
