@@ -86,23 +86,37 @@ func (inv *WorkCenterInventory) TotalSize() int {
 	return WorkUnitsSize(inv.units...)
 }
 
-type SimpleBottomlessInventory struct {
+//------------------------------------------------------------------------------------
+// Initial inventory base
+
+type InitialInventoryBase struct {
 }
 
-func (b SimpleBottomlessInventory) Get() []WorkUnit {
+func (b InitialInventoryBase) Get() []WorkUnit {
 	return []WorkUnit{}
 }
 
-func (b SimpleBottomlessInventory) Add(unit WorkUnit) {
+func (b InitialInventoryBase) Add(unit WorkUnit) {
 	//Nothing to do
 }
 
-func (b SimpleBottomlessInventory) AddAll(units []WorkUnit) {
+func (b InitialInventoryBase) AddAll(units []WorkUnit) {
 	// Nothing to do
 }
 
-func (b SimpleBottomlessInventory) Set(units []WorkUnit) {
+func (b InitialInventoryBase) Set(units []WorkUnit) {
 	// Do nothing.
+}
+
+func (b InitialInventoryBase) TotalSize() int {
+	return math.MaxInt
+}
+
+//------------------------------------------------------------------------------------
+// Simple bottomless inventory
+
+type SimpleBottomlessInventory struct {
+	InitialInventoryBase
 }
 
 func (b SimpleBottomlessInventory) Select(size int) ([]WorkUnit, []WorkUnit) {
@@ -116,6 +130,49 @@ func (b SimpleBottomlessInventory) Select(size int) ([]WorkUnit, []WorkUnit) {
 	return []WorkUnit{}, rv
 }
 
-func (b SimpleBottomlessInventory) TotalSize() int {
-	return math.MaxInt
+func CreateAlternatingBottomlessInventory(epicSize int) Inventory {
+	return &AlternatingEpicBottomlessInventory{
+		epicSize:        epicSize,
+		epicEmittedLast: false,
+	}
+}
+
+type AlternatingEpicBottomlessInventory struct {
+	InitialInventoryBase
+	epicSize        int
+	epicEmittedLast bool
+}
+
+func (b *AlternatingEpicBottomlessInventory) Select(size int) ([]WorkUnit, []WorkUnit) {
+	var remaining []WorkUnit
+	var passing []WorkUnit
+
+	singleUnitsToEmit := size
+	if !b.epicEmittedLast {
+		seedingEpic := []WorkUnit{
+			{
+				Size:             b.epicSize,
+				RequiredCapacity: b.epicSize,
+			},
+		}
+
+		if size >= b.epicSize {
+			passing = seedingEpic
+		} else {
+			remaining = seedingEpic
+		}
+
+		singleUnitsToEmit -= b.epicSize
+	}
+
+	b.epicEmittedLast = !b.epicEmittedLast
+
+	for i := 0; i < singleUnitsToEmit; i++ {
+		passing = append(passing, WorkUnit{
+			Size:             1,
+			RequiredCapacity: 1,
+		})
+	}
+
+	return remaining, passing
 }

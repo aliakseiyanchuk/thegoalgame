@@ -30,10 +30,14 @@ func (pl *ProductionLine) Run(from, to int) ProductionLineRun {
 }
 
 func CreateProductionLine(size int) *ProductionLine {
+	return CreateProductionLineWithSourceInventory(size, &SimpleBottomlessInventory{})
+}
+
+func CreateProductionLineWithSourceInventory(size int, inventory Inventory) *ProductionLine {
 	rv := ProductionLine{}
 
 	first := WorkCenter{
-		Inventory: &SimpleBottomlessInventory{},
+		Inventory: inventory,
 		Index:     0,
 	}
 
