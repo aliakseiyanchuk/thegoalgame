@@ -1,7 +1,7 @@
 MULTIPLATFORMS=linux/amd64,linux/arm64,linux/arm/v6,linux/386
 BINARY_NAME=the_goal_game
-DOCKER_IMAGE=lspwd2/${BINARY_NAME}
-VERSION=0.1
+DOCKER_IMAGE?=localdemos/${BINARY_NAME}
+VERSION?=0.1
 
 
 compile_container_binaries:
@@ -17,6 +17,12 @@ compile_container_binaries:
 	GOOS=linux GOARCH=amd64 		go build -o ./docker/dist/linux/amd64/${BINARY_NAME} 	cmd/main.go
 	GOOS=linux GOARCH=386 			go build -o ./docker/dist/linux/386/${BINARY_NAME}		cmd/main.go
 
+test:
+	go test ./...
+
+create_multiplatform_builder:
+	docker buildx create --name mpbuilder --driver docker-container --bootstrap
+	docker buildx use mpbuilder
 
 load_container: compile_container_binaries
 	docker buildx build \

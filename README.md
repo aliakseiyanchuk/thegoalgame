@@ -8,6 +8,9 @@ during a lunch break on the trail. The game illustrates a basic idea behind the 
 
 This simple app draws possible results of such a game, showing a great variability of possible output.
 
+Additionally, this app provides modifications to this game that is tuned to the specifics of 
+the software development projects.
+
 ## A small theory
 The game shows the inefficiency of a balanced production pipeline (or a project team). A perfectly balanced
 production pipeline is where the capacity of the pipeline perfectly matches the work is given to it. 
@@ -60,8 +63,14 @@ Below is the example output of such a run:
 - `-wrc-max` maximum capacity fo a work center; default to `6`
 - `-r` number of runs; default to `20`
 
-### Starting inventory
-- `-i`: feeding inventory option. The options are: `simple`, `epic-alternating`
+### Seeding inventory
+
+In the book, Alex rolls a die to determine the number of matches to draws from a box of matches.
+For the purpose of our 
+
+- `-si`: feeding inventory option. The options are: `simple`, `epic-alternating`
+
+Simple seeding inventory provides when req
 
 ### Output settings
 - `-plot-achieved-output` plot achieved output vs mean output

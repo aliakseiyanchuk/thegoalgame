@@ -40,7 +40,7 @@ func init() {
 	flag.IntVar(&pipelineSize, "ps", 5, "Production pipeline size")
 	flag.IntVar(&wrcMin, "wrc-min", 1, "Work center minimal capacity during a single run")
 	flag.IntVar(&wrcMax, "wrc-max", 6, "Work center maximal capacity during a single run")
-	flag.StringVar(&inventory, "i", "simple", "Input inventory to production line")
+	flag.StringVar(&inventory, "si", "simple", "Input inventory to production line")
 
 	flag.IntVar(&runs, "r", 20, "Number of runs to perform")
 
