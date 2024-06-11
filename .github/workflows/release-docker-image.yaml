@@ -6,6 +6,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: release
     steps:
       - name: Setup Go ${{ env.GO_VERSION }}
         uses: actions/setup-go@v5
