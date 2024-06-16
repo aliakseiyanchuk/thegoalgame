@@ -42,7 +42,7 @@ func CreateGrapher(runs []ProductionLineRun, minCapacity, maxCapacity int) *Grap
 	}
 }
 
-func (g *Grapher) PlotAchievedOutput() {
+func (g *Grapher) PlotAchievedOutput(simRun int) {
 	data := make([][]float64, 2)
 
 	avg := float64(g.minCapacity) + float64(g.maxCapacity-g.minCapacity)/2
@@ -65,13 +65,13 @@ func (g *Grapher) PlotAchievedOutput() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(asciigraph.Blue, asciigraph.Pink),
 		asciigraph.SeriesLegends("Expected", "Achieved"),
-		asciigraph.Caption(fmt.Sprintf("Achieved %d of %d mean", int(actualBand[numRuns-1]), int(expectedBand[numRuns-1]))),
+		asciigraph.Caption(fmt.Sprintf("Simulation run %d:  %d actual,  %d expected", simRun+1, int(actualBand[numRuns-1]), int(expectedBand[numRuns-1]))),
 	)
 
 	fmt.Println(graph)
 }
 
-func (g *Grapher) PlotLag() {
+func (g *Grapher) PlotLag(simRun int) {
 	avg := float64(g.minCapacity) + float64(g.maxCapacity-g.minCapacity)/2
 
 	lag := make([]float64, len(g.runs))
@@ -86,13 +86,13 @@ func (g *Grapher) PlotLag() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(asciigraph.Pink),
 		asciigraph.SeriesLegends("Output Lag"),
-		asciigraph.Caption("Output Lag"),
+		asciigraph.Caption(fmt.Sprintf("Simulation Run %d: Output Lag", simRun+1)),
 	)
 
 	fmt.Println(graph)
 }
 
-func (g *Grapher) PlotAllWorkCenterInventories() {
+func (g *Grapher) PlotAllWorkCenterInventories(simRun int) {
 
 	numWorkCenters := len(g.runs[0].WorkCenterStat)
 	inventoryData := make([][]float64, numWorkCenters)
@@ -108,7 +108,7 @@ func (g *Grapher) PlotAllWorkCenterInventories() {
 
 	wrcLabels := make([]string, numWorkCenters)
 	for i := range wrcLabels {
-		wrcLabels[i] = fmt.Sprintf("Work Center %d", i+1)
+		wrcLabels[i] = fmt.Sprintf("%d", i+1)
 	}
 
 	graph := asciigraph.PlotMany(inventoryData,
@@ -117,13 +117,13 @@ func (g *Grapher) PlotAllWorkCenterInventories() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(allColours[:numWorkCenters]...),
 		asciigraph.SeriesLegends(wrcLabels...),
-		asciigraph.Caption("Work Center Inventory"),
+		asciigraph.Caption(fmt.Sprintf("Simulation Run %d: Accumulated WiP per work center", simRun+1)),
 	)
 
 	fmt.Println(graph)
 }
 
-func (g *Grapher) PlotAllWorkCenterUnusedCapacity() {
+func (g *Grapher) PlotAllWorkCenterUnusedCapacity(simRun int) {
 
 	numWorkCenters := len(g.runs[0].WorkCenterStat)
 	capacityData := make([][]float64, numWorkCenters)
@@ -139,7 +139,7 @@ func (g *Grapher) PlotAllWorkCenterUnusedCapacity() {
 
 	wrcLabels := make([]string, numWorkCenters)
 	for i := range wrcLabels {
-		wrcLabels[i] = fmt.Sprintf("Work Center %d", i+1)
+		wrcLabels[i] = fmt.Sprintf("%d", i+1)
 	}
 
 	graph := asciigraph.PlotMany(capacityData,
@@ -148,13 +148,13 @@ func (g *Grapher) PlotAllWorkCenterUnusedCapacity() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(allColours[:numWorkCenters]...),
 		asciigraph.SeriesLegends(wrcLabels...),
-		asciigraph.Caption("Work Center Starving"),
+		asciigraph.Caption(fmt.Sprintf("Simulation Run %d: Work Center Starving", simRun+1)),
 	)
 
 	fmt.Println(graph)
 }
 
-func (g *Grapher) PlotCumulativeUnusedCapacity() {
+func (g *Grapher) PlotCumulativeUnusedCapacity(simRun int) {
 
 	numWorkCenters := len(g.runs[0].WorkCenterStat)
 	cumul := [][]float64{
@@ -182,12 +182,12 @@ func (g *Grapher) PlotCumulativeUnusedCapacity() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(asciigraph.Blue, asciigraph.Red),
 		asciigraph.SeriesLegends("Capacity Available", "Capacity Unused"),
-		asciigraph.Caption("Total Starving Per Run"),
+		asciigraph.Caption(fmt.Sprintf("Simulation Run %d: Total Starving Per Cycle", simRun+1)),
 	)
 
 	fmt.Println(graph)
 }
-func (g *Grapher) PlotRelativeCumulativeUnusedCapacity() {
+func (g *Grapher) PlotRelativeCumulativeUnusedCapacity(simRun int) {
 
 	numWorkCenters := len(g.runs[0].WorkCenterStat)
 	cumul := [][]float64{
@@ -220,8 +220,10 @@ func (g *Grapher) PlotRelativeCumulativeUnusedCapacity() {
 		asciigraph.Height(15),
 		asciigraph.SeriesColors(asciigraph.Red),
 		asciigraph.SeriesLegends("Unused capacity, %"),
-		asciigraph.Caption("Unused Capacity %"),
+		asciigraph.Caption(fmt.Sprintf("Simulation Run %d: Unused Capacity per Cycle (%%)", simRun+1)),
 	)
 
+	fmt.Println()
 	fmt.Println(graph)
+	fmt.Println()
 }

@@ -130,49 +130,42 @@ func (b SimpleBottomlessInventory) Select(size int) ([]WorkUnit, []WorkUnit) {
 	return []WorkUnit{}, rv
 }
 
-func CreateAlternatingBottomlessInventory(epicSize int) Inventory {
+func CreateAlternatingBottomlessInventory(meanSize float64) Inventory {
 	return &AlternatingEpicBottomlessInventory{
-		epicSize:        epicSize,
+		meanSize:        meanSize,
 		epicEmittedLast: false,
 	}
 }
 
 type AlternatingEpicBottomlessInventory struct {
 	InitialInventoryBase
-	epicSize        int
+	meanSize        float64
 	epicEmittedLast bool
 }
 
-func (b *AlternatingEpicBottomlessInventory) Select(size int) ([]WorkUnit, []WorkUnit) {
-	var remaining []WorkUnit
+func (b *AlternatingEpicBottomlessInventory) Select(_ int) ([]WorkUnit, []WorkUnit) {
 	var passing []WorkUnit
 
-	singleUnitsToEmit := size
 	if !b.epicEmittedLast {
+		epicSize := int(math.Floor(b.meanSize))
+
 		seedingEpic := []WorkUnit{
 			{
-				Size:             b.epicSize,
-				RequiredCapacity: b.epicSize,
+				Size:             epicSize,
+				RequiredCapacity: epicSize,
 			},
 		}
 
-		if size >= b.epicSize {
-			passing = seedingEpic
-		} else {
-			remaining = seedingEpic
+		passing = seedingEpic
+		b.epicEmittedLast = true
+	} else {
+		passing = make([]WorkUnit, int(math.Ceil(b.meanSize)))
+		for i := range passing {
+			passing[i].Size = 1
+			passing[i].RequiredCapacity = 1
 		}
-
-		singleUnitsToEmit -= b.epicSize
+		b.epicEmittedLast = false
 	}
 
-	b.epicEmittedLast = !b.epicEmittedLast
-
-	for i := 0; i < singleUnitsToEmit; i++ {
-		passing = append(passing, WorkUnit{
-			Size:             1,
-			RequiredCapacity: 1,
-		})
-	}
-
-	return remaining, passing
+	return []WorkUnit{}, passing
 }
