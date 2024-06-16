@@ -6,11 +6,15 @@ during a lunch break on the trail. The game illustrates a basic idea behind the 
 - the bottleneck controls the output of the whole system; and
 - all resources behind the bottleneck are always starved.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RPZG8r_poZg?si=GYcj-CY0PQKImoaq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Here's a small visual explanation of the game and its significance: 
 
-This simple app draws possible results of such a game, showing a great variability of possible output.
+[![The Goal Game](https://i9.ytimg.com/vi/RPZG8r_poZg/mq3.jpg?sqp=CNy5vbMG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGE8gZSgrMA8=&rs=AOn4CLAU5ZfnWtZ58tfXmWKPtYLALNQlNw)](https://youtu.be/RPZG8r_poZg)
 
-Additionally, this app provides modifications to this game that is tuned to the specifics of 
+The process described in the book may be difficult to follow. This app helps with visualizing the waves the inventory
+moves through the plant. Unlike ALex Rogo who was limited to a piece pof paper, this small app draws possible 
+results the game.
+
+Building on the idea described in the book, this app provides modifications to this game that is tuned to the specifics of 
 the software development projects.
 
 ## A small theory
