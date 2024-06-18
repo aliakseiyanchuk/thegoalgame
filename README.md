@@ -1,70 +1,133 @@
 # The Goal Game Demonstration
 
-This is an illustration of the game Alex Rogo, the protagonist in the novel 
-["The Goal" by  Eliyahu M. Goldratt](https://en.wikipedia.org/wiki/The_Goal_(novel)), plays with scout troop
-during a lunch break on the trail. The game illustrates a basic idea behind the Theory of Constraints:
+As a IT consultant, have you ever wondered why agile projects seem to behave in exactly the same across different
+organizations, teams, and Scrum masters? 
+> Three sprints back we did 65% of our commitments. Two sprints back we did 104%. Last sprint we did 75%.
+> I think we are getting predictable.
+
+It has to do with the Scrum guide and how it is actually applied in the field. Turns out, if you
+organise work in a specific way, you will get specific effects in the flow of work. And it also turns out 
+there's an explanation for what you see in Scrum in the manufacturing world since 1970's. 
+
+## A necessary throw-back
+
+Alex Rogo, the protagonist in the novel 
+["The Goal" by  Eliyahu M. Goldratt](https://en.wikipedia.org/wiki/The_Goal_(novel)),
+is a managed of the loss-generating plant that the management intends to close down. Alex wants to prevent this 
+from happening and is frantically looking to discover the reasons. And he happens to achieve this 
+by playing a game using a box of matches and a die. 
+
+If you struggle to understand why your Agile team is struggling to meet its commitments, if you want to understand
+why your team's output oscillates, you need to play this game as well. Same as Alex Rogo.
+
+In the novel, Alex Rogo replicates a production pipeline to "process matches" -- that is, to move them from box
+to the output bowl. A match has to travel through 
+several work centers "powered" by a boy scout. The number of matches a work center can move at each production
+pipeline run in determined by a roll of the die.
+
+This is an video illustration of the game The Goal novel describes.
+
+[![The Goal Game](./doc/mq1.jpg)](https://youtu.be/RPZG8r_poZg)
+
+In the book, Alex theorizes that the "production pipeline" he's setting up has a mean output of 3.5 matches
+per cycle. So after 20 runs they should have "processed" 70 matches. Running this simulation several times
+shows that such production line would produce around 50 "processed matches" after 20 cycles.
+
+The Goal novel doesn't really visualize the data that Alex Rogo collects while playing this game.
+This app fills this missing ga by visualizing the waves the inventory
+moves through the plant (and a software development team). 
+
+## A small theory
+
+ The game illustrates a basic idea behind the Theory of Constraints and its application to practice:
 - the bottleneck controls the output of the whole system; and
 - all resources behind the bottleneck are always starved.
 
-Here's a small visual explanation of the game and its significance: 
+The game shows the inefficiency of a balanced production pipeline (or, by extension, a project team) and how they
+lead to ever-increasing WIP (work-in-progress) build-up. A perfectly balanced
+production pipeline is where the capacity of the pipeline perfectly matches the work is given to it.
 
-[![The Goal Game](https://i9.ytimg.com/vi/RPZG8r_poZg/mq3.jpg?sqp=CNy5vbMG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGE8gZSgrMA8=&rs=AOn4CLAU5ZfnWtZ58tfXmWKPtYLALNQlNw)](https://youtu.be/RPZG8r_poZg)
-
-The process described in the book may be difficult to follow. This app helps with visualizing the waves the inventory
-moves through the plant. Unlike ALex Rogo who was limited to a piece pof paper, this small app draws possible 
-results the game.
-
-Building on the idea described in the book, this app provides modifications to this game that is tuned to the specifics of 
-the software development projects.
-
-## A small theory
-The game shows the inefficiency of a balanced production pipeline (or, by extension, a project team). A perfectly balanced
-production pipeline is where the capacity of the pipeline perfectly matches the work is given to it. 
 The inefficiency arises from the very fact
 that in the event a flow through the production line is upset out of balance, there isn't a possibility to
 catch up.
 
-In reality, a capacity of a work center on a production line fluctuate around mean capacity: sometimes a work center does a little bit
+In reality, a capacity of a work center on a production line fluctuate around its mean capacity: sometimes a work center does a little bit
 above mean, sometimes below. Same for software engineers in an agile project working on features in the sprint.
 These little oscillations have a dramatic impact on the output.
 
-In the novel, Alex Rogo theorizes that the production pipeline he's setting up has a mean output of 3.5 matches
-per cycle. So after 20 runs they should have "processed" 70 matches. Running this simulation several times
-shows that such production line would produce around 50 "processed matches" after 20 cycles.
+## Agile development extension
 
-This small container is a more visual replacement for the spreadsheet described in the book that Alex Rogo
-is using to keep the track of the situation.
+Building on the idea described in the book, this app provides modifications to this game that is tuned to the specifics of 
+the software development projects. It simulates "epics", a pieces of related functionalities that need to be worked on
+together, and it is slightly below the mean capacity. If a work center cannot complete the work on an "epic", the 
+epic stays at the work center.
+
+A practical example? Consider your work needs to be synchronized with e.g. an infrastructure release. Didn't make it in time? Let's
+assume that you are affected by changing policies. Since you've missed to deliver, the work that you've done 
+is no longer compliant and you need to rework. Although in reality it's unlikely that you will need to re-develop
+everything, such situations can be quite disruptive for the flow of work.
 
 ## Running this app in container
-You can run this container in container indicating desired plots to be produced:
+You can run this container in container indicating desired plots to be produced.
+
+### Expected vs achieved output
+Let's look at the basic information Alex Rogo is after: how many matches will the pipeline be able to process?
 ```shell
 docker run dlspwd2/the_goal_game:latest -plot-achieved-output
 ```
 ```shell
 podman run docker.io/lspwd2/the_goal_game:latest -plot-achieved-output
 ```
-Below is the example output of such a run:
-```
- 70 ┤                                                        ╭──
- 65 ┤                                                   ╭────╯
- 61 ┤                                               ╭───╯
- 56 ┤                                           ╭───╯
- 52 ┤                                       ╭───╯
- 47 ┤                                   ╭───╯                ╭──
- 42 ┤                               ╭───╯                 ╭──╯
- 38 ┤                           ╭───╯                  ╭──╯
- 33 ┤                       ╭───╯                 ╭────╯
- 29 ┤                   ╭───╯                 ╭───╯
- 24 ┤               ╭───╯          ╭──────────╯
- 19 ┤           ╭───╯         ╭────╯
- 15 ┤       ╭───╯     ╭───────╯
- 10 ┤   ╭───╯  ╭──────╯
-  6 ┼───╭──────╯
-  1 ┼───╯
-                        Achieved 45 of 70 mean
+> Hint: to re-run this simulation multiple times, add `-R` option specifying the desired number of 
+> runs. To simulate the effects of receiving epics, add `-m epic-alternating` option. 
 
-                       ■ Expected   ■ Achieved
+![Expected vs Achieved Output](./doc/achieved_output.png)
+
+Re-running this simulation several times will give you different results. It's a probability game.
+
+### Lag behind mean
+The lag behind mean is how many "matches" are not processed relative to the pipeline's average. It oscillates, and
+sometimes dramatically. You may want to run this simulation several times.
+
+```shell
+docker run dlspwd2/the_goal_game:latest -plot-lag -R 5
 ```
+```shell
+podman run docker.io/lspwd2/the_goal_game:latest -plot-lag -R 5
+```
+![Output Lag](./doc/output_lag.png)
+
+### Starving
+
+The main reason for delays: a work center cannot use its capacity because inputs haven't reached it. Two 
+options can be used: `-plot-starving` calculates the unused capacity percentage across all work centers.
+`-plot-wrc-starving` shows actual unused capacity at the center.
+
+```shell
+docker run dlspwd2/the_goal_game:latest -plot-starving
+docker run dlspwd2/the_goal_game:latest -plot-wrc-starving
+```
+```shell
+podman run docker.io/lspwd2/the_goal_game:latest -plot-starving
+podman run docker.io/lspwd2/the_goal_game:latest -plot-starving -plot-wrc-starving
+```
+![Work Center Starving](./doc/starving.png)
+
+### Inventory build-up
+
+Accumulated WIP: a silent killer of any agility. This is the amount of work trapped within thin the pipeline.
+It is not unusual to see work centers that accumulate 15 to 20 matches -- that is, 5 to 7 iteration worth of work
+as their WIP. Guess what happens with due date and capacity to deliver the results?
+> A hint: significantly delayed.
+
+```shell
+docker run dlspwd2/the_goal_game:latest -plot-wrc-inventories
+```
+```shell
+podman run docker.io/lspwd2/the_goal_game:latest -plot-wrc-inventories
+```
+![Accumulated Work in Progress](./doc/accumulated_wip.png)
+
 ## Command Line Options
 
 ### Repeating options
