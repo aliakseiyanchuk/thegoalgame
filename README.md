@@ -13,14 +13,15 @@ there's an explanation for what you see in Scrum in the manufacturing world sinc
 
 Alex Rogo, the protagonist in the novel 
 ["The Goal" by  Eliyahu M. Goldratt](https://en.wikipedia.org/wiki/The_Goal_(novel)),
-is a managed of the loss-generating plant that the management intends to close down. Alex wants to prevent this 
+is a manager of the loss-generating plant that the management intends to close down. Alex wants to prevent this 
 from happening and is frantically looking to discover the reasons. And he happens to achieve this 
 by playing a game using a box of matches and a die. 
 
-If you struggle to understand why your Agile team is struggling to meet its commitments, if you want to understand
+If you struggle to understand why your Agile team is behind meeting its commitments, if you want to understand
 why your team's output oscillates, you need to play this game as well. Same as Alex Rogo.
 
-In the novel, Alex Rogo replicates a production pipeline to "process matches" -- that is, to move them from box
+In the novel, while hiking on a trail in with a troop of scouts, Alex Rogo sets up a "production pipeline" 
+to "process matches" -- that is, to move them from box
 to the output bowl. A match has to travel through 
 several work centers "powered" by a boy scout. The number of matches a work center can move at each production
 pipeline run in determined by a roll of the die.
@@ -45,7 +46,7 @@ moves through the plant (and a software development team).
 
 The game shows the inefficiency of a balanced production pipeline (or, by extension, a project team) and how they
 lead to ever-increasing WIP (work-in-progress) build-up. A perfectly balanced
-production pipeline is where the capacity of the pipeline perfectly matches the work is given to it.
+production pipeline is where the capacity of the pipeline perfectly matches the work given to it.
 
 The inefficiency arises from the very fact
 that in the event a flow through the production line is upset out of balance, there isn't a possibility to
@@ -90,7 +91,7 @@ The lag behind mean is how many "matches" are not processed relative to the pipe
 sometimes dramatically. You may want to run this simulation several times.
 
 ```shell
-docker run dlspwd2/the_goal_game:latest -plot-lag -R 5
+docker run lspwd2/the_goal_game:latest -plot-lag -R 5
 ```
 ```shell
 podman run docker.io/lspwd2/the_goal_game:latest -plot-lag -R 5
@@ -104,8 +105,8 @@ options can be used: `-plot-starving` calculates the unused capacity percentage 
 `-plot-wrc-starving` shows actual unused capacity at the center.
 
 ```shell
-docker run dlspwd2/the_goal_game:latest -plot-starving
-docker run dlspwd2/the_goal_game:latest -plot-wrc-starving
+docker run lspwd2/the_goal_game:latest -plot-starving
+docker run lspwd2/the_goal_game:latest -plot-wrc-starving
 ```
 ```shell
 podman run docker.io/lspwd2/the_goal_game:latest -plot-starving
@@ -121,7 +122,7 @@ as their WIP. Guess what happens with due date and capacity to deliver the resul
 > A hint: significantly delayed.
 
 ```shell
-docker run dlspwd2/the_goal_game:latest -plot-wrc-inventories
+docker run lspwd2/the_goal_game:latest -plot-wrc-inventories
 ```
 ```shell
 podman run docker.io/lspwd2/the_goal_game:latest -plot-wrc-inventories
