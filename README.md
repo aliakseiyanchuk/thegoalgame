@@ -74,7 +74,7 @@ You can run this container in container indicating desired plots to be produced.
 ### Expected vs achieved output
 Let's look at the basic information Alex Rogo is after: how many matches will the pipeline be able to process?
 ```shell
-docker run dlspwd2/the_goal_game:latest -plot-achieved-output
+docker run lspwd2/the_goal_game:latest -plot-achieved-output
 ```
 ```shell
 podman run docker.io/lspwd2/the_goal_game:latest -plot-achieved-output
